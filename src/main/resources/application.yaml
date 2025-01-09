@@ -1,5 +1,6 @@
 server:
   shutdown: graceful
+  port: 8090
 
 spring:
   application:
@@ -11,23 +12,13 @@ spring:
   docker:
     compose:
       enabled: false # Enable if you use Docker Compose - I use Podman Compose
+  kafka:
+    bootstrap-servers:
+      - localhost:19092
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.UUIDSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
 
   threads:
     virtual:
-      enabled: true # Starting since SB 3.2
-
-  sql:
-    init:
-      mode: always # Please note that this is for development only
-  mvc:
-    problemdetails:
       enabled: true
-
-management:
-  endpoints:
-    web:
-      exposure:
-        include: "health,metrics"
-logging:
-  level:
-    dev.tpcoder.coupon: debug

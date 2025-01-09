@@ -1,0 +1,28 @@
+receivers:
+  kafkametrics:
+    protocol_version: 2.0.0
+    brokers: kafka:9092
+    scrapers:
+      - brokers
+      - topics
+      - consumers
+    collection_interval: 1s
+
+processors:
+  batch:
+    send_batch_max_size: 100
+    send_batch_size: 10
+    timeout: 10s
+
+exporters:
+  otlp:
+    endpoint: lgtm:4317
+    tls:
+      insecure: true
+
+service:
+  pipelines:
+    metrics:
+      receivers: [kafkametrics]
+      processors: [batch]
+      exporters: [otlp]
